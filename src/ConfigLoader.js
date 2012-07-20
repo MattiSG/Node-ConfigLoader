@@ -9,6 +9,12 @@ var pathUtils = require('path');
 */
 var USER_HOME = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];	// thanks http://stackoverflow.com/questions/9080085
 
+/** Node 0.6 compatibility.
+*@private
+*/
+var existsSync = fs.existsSync || pathUtils.existsSync;
+
+
 
 var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	Implements: Options,
@@ -119,13 +125,13 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	*@private
 	*/
 	parseBestMatch: function parseBestMatch(file) {
-		if (pathUtils.existsSync(file))
+		if (existsSync(file))
 			return this.parse(file, path.extname(file).slice(1).toLowerCase());
 
 		for (var extension in ConfigLoader.parsers) {
 			if (Object.prototype.hasOwnProperty.call(ConfigLoader.parsers, extension)) {
 				var tentativeName = file + '.' + extension;
-				if (pathUtils.existsSync(tentativeName))	//TODO: what about case sensitivity?
+				if (existsSync(tentativeName))	//TODO: what about case sensitivity?
 					return this.parse(tentativeName, extension);
 			}
 		}

@@ -1,11 +1,11 @@
 {
 	"name":	"mattisg.configloader",
-	"version":	"0.0.1",
+	"version":	"0.0.2",
 	
 	"description":	"A configuration loader focused on handling overrides cascades..",
 	"keywords":	"configuration, config",
 	
-	"homepage":	"https://github.com/MattiSG/Node-ConfigLoader/",
+	"homepage":	"https://github.com/MattiSG/Node-ConfigLoader#readme",
 	"bugs":		"https://github.com/MattiSG/Node-ConfigLoader/issues",
 	"author":	"Matti Schneider <hi@mattischneider.fr> (http://mattischneider.fr)",
 	
@@ -20,9 +20,8 @@
 	},
 	
 	"engines": {
-		"node" : "0.6"
+		"node" : ">=0.6"
 	},
-	"engineStrict": true,
 	
 	"dependencies": {
 		"mootools": "1.4"
