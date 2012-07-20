@@ -19,6 +19,11 @@
 		"url" : "https://github.com/MattiSG/Node-ConfigLoader.git"
 	},
 	
+	"engines": {
+		"node" : "0.6"
+	},
+	"engineStrict": true,
+	
 	"dependencies": {
 		"mootools": "1.4"
 	},	

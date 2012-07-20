@@ -7,7 +7,10 @@ var ConfigLoader = require('../src/ConfigLoader');
 var CONFIG_FILE = 'demo-config',
 	OUTER_FOLDER = pathUtils.join(__dirname, 'outer'),
 	MIDDLE_FOLDER = pathUtils.join(OUTER_FOLDER, 'middle'),
-	INNER_FOLDER = pathUtils.join(MIDDLE_FOLDER, 'inner');
+	INNER_FOLDER = pathUtils.join(MIDDLE_FOLDER, 'inner'),
+	OUTER_FOLDER_JS = pathUtils.join(__dirname, 'outer-js'),
+	MIDDLE_FOLDER_JS = pathUtils.join(OUTER_FOLDER_JS, 'middle'),
+	INNER_FOLDER_JS = pathUtils.join(MIDDLE_FOLDER_JS, 'inner');
 
 
 describe('Loading', function() {
@@ -69,5 +72,23 @@ describe('Loading', function() {
 		var loaded = loader.load(pathUtils.join('..', CONFIG_FILE));
 
 		middleToOuterTest(loaded);
+	});
+
+	describe('of the middle folder with JS module.exports config', function() {
+		var loader = new ConfigLoader({
+			from: MIDDLE_FOLDER_JS,
+			to: OUTER_FOLDER_JS
+		});
+		var loaded = loader.load(CONFIG_FILE);
+
+		middleToOuterTest(loaded);
+
+		it('should execute Javascript', function() {
+			assert.strictEqual(loaded['2+2'], 4);
+		});
+
+		it('should have magic variables', function() {
+			assert.equal(loaded.filename, pathUtils.join(MIDDLE_FOLDER_JS, CONFIG_FILE + '.js'));
+		});
 	});
 });

@@ -105,23 +105,59 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	*@private
 	*/
 	loadFromDirectory: function loadFromDirectory(dir) {
-		var newData = this.parse(pathUtils.join(dir, this.file));
+		var newData = this.parseBestMatch(pathUtils.join(dir, this.file));
 		this.result = Object.merge(newData, this.result);
 		return this;
 	},
 
-	/** Returns the contents of the given file, or an empty hash if none is found.
+	/** The files to look for may avoid specifying an extension, and let users specify configuration in whichever supported language they want. This method parses the best matching file from a possibly incomplete file path.
+	* If the given file is an exact match, the parser to use is determined from its extension.
+	* Otherwise, all extensions defined in the static `parsers` hash will be attempted, until there is a match.
 	*
+	*@param	{String}	file	A path to a specific file, or to a file without an extension.
+	*@return	{Object}	The parsed contents of the best matching file, or an empty hash if any error arises or no file matches.
+	*@private
+	*/
+	parseBestMatch: function parseBestMatch(file) {
+		if (pathUtils.existsSync(file))
+			return this.parse(file, path.extname(file).slice(1).toLowerCase());
+
+		for (var extension in ConfigLoader.parsers) {
+			if (Object.prototype.hasOwnProperty.call(ConfigLoader.parsers, extension)) {
+				var tentativeName = file + '.' + extension;
+				if (pathUtils.existsSync(tentativeName))	//TODO: what about case sensitivity?
+					return this.parse(tentativeName, extension);
+			}
+		}
+
+		return Object.create(null);
+	},
+
+	/** Returns the contents of the given file, or an empty hash if any error arises.
+	*
+	*@param	{String}	file	The path to the file to be parsed.
+	*@param	{String}	type	File extension declared in the `parsers` hash.
 	*@return	{Object}	The parsed contents of the given file.
 	*@private
 	*/
-	parse: function parse(file) {
+	parse: function parse(file, type) {
 		try {
-			return JSON.parse(fs.readFileSync(file + '.json', 'utf-8'));	//TODO: support YAML
+			return ConfigLoader.parsers[type](fs.readFileSync(file, 'utf-8'), file);
 		} catch (e) {
 			return Object.create(null);	// a simple Hash, with none Object methods
 		}
 	}
 });
+
+/** Parsing functions for file types.
+* A hash mapping file extensions to functions that transform the file’s contents to a Hash.
+* The functions will be called with the following parameters:
+* 1. file content;
+* 2. file path.
+*/
+ConfigLoader.parsers = {
+	'json': JSON.parse,
+	'js': function(contents, path) { return require(path); }
+}
 
 module.exports = ConfigLoader;	// CommonJS export
