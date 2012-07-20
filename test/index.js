@@ -36,5 +36,26 @@ describe('Loading', function() {
 		it('should not visit the inner directories', function() {
 			assert.equal(typeof loaded.inner, 'undefined' , 'Inner folder was visited');
 		});
-	})
+	});
+
+	describe('when given the inner folders only', function() {
+		var loader = new ConfigLoader({
+			from: INNER_FOLDER,
+			to: MIDDLE_FOLDER
+		});
+		var loaded = loader.load(CONFIG_FILE);
+
+		it('should find the inner value', function() {
+			assert.equal(loaded.from, 'inner');
+		});
+
+		it('should visit the middle directory', function() {
+			assert(loaded.inner);
+			assert(loaded.middle, 'Middle folder was not visited');
+		});
+
+		it('should not visit the outer directory', function() {
+			assert.equal(typeof loaded.outer, 'undefined' , 'Outer folder was visited');
+		});
+	});
 });
