@@ -3,32 +3,67 @@ require('mootools');
 var pathUtils = require('path');
 	fs = require('fs')
 
-var userHome = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
-
-/** 
-*
-* Supported formats are JSON and YAML.
+/** Cross-platform user’s `$HOME` (i.e. `~`).
+*@type	{String}
+*@private
 */
-var ConfigLoader = new Class({
+var USER_HOME = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];	// thanks http://stackoverflow.com/questions/9080085
+
+
+var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	Implements: Options,
 
+	/** These options can be set either by passing them to the constructor, or by later calling `setOptions` and passing a hash with the ones to override.
+	*/
 	options: {
+		/** The directory from which to start looking for configuration files.
+		*@default	cwd
+		*/
 		from:	process.cwd(),
-		to:		userHome,	// thanks http://stackoverflow.com/questions/9080085
-		user:	userHome,
+		/** The directory at which to end looking for configuration files.
+		*@default	User’s home directory.
+		*/
+		to:		USER_HOME,
+		/** The directory in which to look for user-specific configuration files.
+		*@default	User’s home directory.
+		*/
+		user:	USER_HOME,
 
+		/** Name of the directory in which to look for application-specific configuration files.
+		* See step 2 of the lookup algorithm.
+		*@default	Base name of the executing script.
+		*/
 		appName:	pathUtils.basename(process.argv[1], '.js'),
 
-		defaults:	Object.create(null)	// a simple Hash, with none Object methods
+		/** Programmatically set default values.
+		* If different files can be looked up by this ConfigLoader, this can be a hash of default hashes, whose keys are names of the files that will be looked up.
+		*
+		*@example
+		*	{ 'config': {
+		*		// default values when calling load('config')
+		*	}, 'database': {
+		*		// default values when calling load('database')
+		*	} }
+		*@default	Empty hash.
+		*/
+		defaults:	Object.create(null)	// a simple Hash, with none of the Object methods
 	},
 
+	/** @class	Loads a configuration with cascading overrides.
+	* The lookup algorithm is as follows:
+	* 1. Start looking in the given directory (default to `cwd`), all the way up to another directory (default to user’s `$HOME`).
+	* 2. Look in `$HOME/.<appname>/` (user config).
+	* 3. Look in app default (`dirname($0)/config`).
+	*
+	*@constructs
+	*/
 	initialize: function init(options) {
 		this.setOptions(options);
 	},
 
 	/** Loads all config to be found for the given filename, across all search domains.
 	*
-	*@see	README
+	*@return	{Hash}	A hash with all loaded values.
 	*/
 	load: function load(filename) {
 		this.file = filename;
@@ -36,7 +71,7 @@ var ConfigLoader = new Class({
 		this.result = this.options.defaults[filename] || this.options.defaults;
 
 		this.loadAllWithin(this.options.from, this.options.to)
-			.loadFromDirectory(pathUtils.join(userHome, '.' + this.options.appName))
+			.loadFromDirectory(pathUtils.join(USER_HOME, '.' + this.options.appName))
 			.loadFromDirectory(process.argv[1]);
 
 		return this.result;
