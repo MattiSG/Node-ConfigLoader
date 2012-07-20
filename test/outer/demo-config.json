@@ -1,3 +1,4 @@
 {
-	"from": "outer"
+	"from": "outer",
+	"outer": true
 }

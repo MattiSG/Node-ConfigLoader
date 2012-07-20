@@ -1,3 +1,4 @@
 {
-	"from": "inner"
+	"from": "inner",
+	"inner": true
 }

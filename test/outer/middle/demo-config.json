@@ -1,3 +1,4 @@
 {
-	"from": "middle"
+	"from": "middle",
+	"middle": true
 }
