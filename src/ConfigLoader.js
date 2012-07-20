@@ -1,3 +1,5 @@
+require('mootools');
+
 var pathUtils = require('path');
 	fs = require('fs')
 
@@ -11,8 +13,6 @@ var ConfigLoader = new Class({
 	Implements: Options,
 
 	options: {
-		file: 'config.json',
-
 		directories: {
 			from:	process.cwd(),
 			to:		userHome,	// thanks http://stackoverflow.com/questions/9080085
@@ -26,31 +26,60 @@ var ConfigLoader = new Class({
 
 	initialize: function init(options) {
 		this.setOptions(options);
-		this.result = this.options.defaults;
 	},
 
-	findInDirectories: function findInDirectories() {
-		var cwd = fs.realpathSync(this.options.from),
-			prevCwd,
-			to = fs.realpathSync(this.options.to);
+	/** Loads all config to be found for the given filename, across all search domains.
+	*
+	*@see	README
+	*/
+	load: function load(filename) {
+		this.file = filename;
 
-		do {
-			prevCwd = cwd;	// used to check whether the root was reached (dirname('/') == '/', but has to be cross-platform)
-			if ()
-				this.add()
+		this.result = this.options.defaults[filename] || this.options.defaults;
 
-			cwd = pathUtils.dirname(cwd);
-		} while (cwd != prevCwd
-				 && cwd.indexOf(to) === 0);	// go up the directory tree only as long as we're above the limit directory
-	},
+		this.loadAllWithin(this.options.from, this.options.to)
+			.loadFromDirectory(pathUtils.join(userHome, '.' + this.options.appName))
+			.loadFromDirectory(process.argv[1]);
 
-	loadFromDirectory: function loadFromDirectory(dir) {
-		var newData = this.load(pathUtils.join(dir, this.options.file));
-		this.result = Object.merge(newData, this.result);
 		return this.result;
 	},
 
-	load: function load(file) {
+	/** Adds to the result all config files found between the two given directories.
+	*
+	*@return	{ConfigLoader}	this, for chainability.
+	*/
+	loadAllWithin: function loadAllWithin(from, to) {
+		var cwd = fs.realpathSync(from),
+			prevCwd,
+			to = fs.realpathSync(to);
+
+		do {
+			this.loadFromDirectory(cwd);
+			prevCwd = cwd;	// used to check whether the root was reached (dirname('/') == '/', but has to be cross-platform)
+			cwd = pathUtils.dirname(cwd);
+		} while (cwd != prevCwd
+				 && cwd.indexOf(to) === 0);	// go up the directory tree only as long as we're above the limit directory
+
+		return this;
+	},
+
+	/** Merges the current config with the one to be found in the given directory.
+	* If no file is found, the config is not changed.
+	*
+	*@return	{ConfigLoader}	this, for chainability.
+	*@see	#result
+	*/
+	loadFromDirectory: function loadFromDirectory(dir) {
+		var newData = this.parse(pathUtils.join(dir, this.file));
+		this.result = Object.merge(newData, this.result);
+		return this;
+	},
+
+	/** Returns the contents of the given file, or an empty hash if none is found.
+	*
+	*@return	{Object}	The parsed contents of the given file.
+	*/
+	parse: function parse(file) {
 		try {
 			return require(file);	//TODO: support YAML
 		} catch (e) {
