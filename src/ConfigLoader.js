@@ -82,7 +82,7 @@ var ConfigLoader = new Class({
 	*/
 	parse: function parse(file) {
 		try {
-			return require(file);	//TODO: support YAML
+			return JSON.parse(fs.readFileSync(file + '.json', 'utf-8'));	//TODO: support YAML
 		} catch (e) {
 			return Object.create(null);	// a simple Hash, with none Object methods
 		}
