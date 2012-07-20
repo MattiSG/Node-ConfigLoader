@@ -13,11 +13,9 @@ var ConfigLoader = new Class({
 	Implements: Options,
 
 	options: {
-		directories: {
-			from:	process.cwd(),
-			to:		userHome,	// thanks http://stackoverflow.com/questions/9080085
-			user:	userHome
-		},
+		from:	process.cwd(),
+		to:		userHome,	// thanks http://stackoverflow.com/questions/9080085
+		user:	userHome,
 
 		appName:	pathUtils.basename(process.argv[1], '.js'),
 
@@ -47,6 +45,7 @@ var ConfigLoader = new Class({
 	/** Adds to the result all config files found between the two given directories.
 	*
 	*@return	{ConfigLoader}	this, for chainability.
+	*@private
 	*/
 	loadAllWithin: function loadAllWithin(from, to) {
 		var cwd = fs.realpathSync(from),
@@ -68,6 +67,7 @@ var ConfigLoader = new Class({
 	*
 	*@return	{ConfigLoader}	this, for chainability.
 	*@see	#result
+	*@private
 	*/
 	loadFromDirectory: function loadFromDirectory(dir) {
 		var newData = this.parse(pathUtils.join(dir, this.file));
@@ -78,6 +78,7 @@ var ConfigLoader = new Class({
 	/** Returns the contents of the given file, or an empty hash if none is found.
 	*
 	*@return	{Object}	The parsed contents of the given file.
+	*@private
 	*/
 	parse: function parse(file) {
 		try {
