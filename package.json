@@ -27,6 +27,7 @@
 		"mootools": "1.4"
 	},	
 	"devDependencies": {
-		"mocha": "1.2"
+		"mocha": "1.2",
+		"visionmedia-jscoverage": "1.0"
 	}
 }

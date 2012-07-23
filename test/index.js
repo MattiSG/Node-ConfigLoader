@@ -2,7 +2,7 @@ require('mocha');
 var assert = require('assert'),	// no point in using should, as config objects have no prototype, hence no “should” augmentation
 	pathUtils = require('path');
 
-var ConfigLoader = require('../src/ConfigLoader');
+var ConfigLoader = require('../' + (process.env.npm_config_coverage ? 'build' : 'src') + '/ConfigLoader');
 
 var CONFIG_FILE = 'demo-config',
 	OUTER_FOLDER = pathUtils.join(__dirname, 'outer'),
