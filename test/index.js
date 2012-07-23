@@ -207,20 +207,17 @@ describe('Overrides', function() {
 	});
 });
 
-describe('Debug logging', function() {
-	it ('should log without doing anything bad', function() {
-		var visited = false,
-			prevLog = console.error;
-
-		console.error = function() {
-				visited = true;
-		}
+describe('Observer option', function() {
+	it ('should call the observer function', function() {
+		var visited = false;
 
 		new ConfigLoader({
-			debug: true
+			observer: function(filename, data) {
+				assert.equal(typeof filename, 'string');
+				assert.equal(typeof data, 'object');
+				visited = true;
+			}
 		}).load(CONFIG_FILE);
-
-		console.error = prevLog;
 
 		assert(visited, 'Nothing was logged in debug mode!');
 	})

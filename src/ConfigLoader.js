@@ -59,11 +59,15 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 		*/
 		override:	Object.create(null),	// a simple Hash, with none of the Object methods
 
-		/** Debug mode. If set to `true`, will output to `console.error` all visited folders and loaded data.
-		*@type	{Boolean}
+		/** If set to a function, will call it for each encountered directory, with two parameters:
+		* 1. The visited directory.
+		* 2. The parsed data (all since the beginning, not only the new one from the given directory).
+		* Especially useful for quick debugging with `observer: console.error`, but could be used with Winston loggers or any event-driven trigger.
+		*
+		*@type	{Function}
 		*@default	false
 		*/
-		debug: false
+		observer: false
 	},
 
 	/** @class	Loads a configuration with cascading overrides.
@@ -124,8 +128,8 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	loadFromDirectory: function loadFromDirectory(dir) {
 		var newData = this.parseBestMatch(pathUtils.join(dir, this.file));
 		this.result = Object.merge(newData, this.result);
-		if (this.options.debug)
-			console.error('Loading config from "' + dir + '", now having', newData);
+		if (this.options.observer)
+			this.options.observer(dir, newData);
 		return this;
 	},
 

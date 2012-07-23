@@ -107,9 +107,14 @@ Example:
 			}
 		}
 
-#### `debug` ####
+#### `observer` ####
 
-If you ever feel the need to understand how the configuration is parsed to pinpoint the source of a specific value, simply pass the `debug: true` option to output every step to `console.error`.
+If you ever feel the need to understand how the configuration is parsed to pinpoint the source of a specific value, you could pass a logging function as the `observer` option. Its value is a function, which will be called on each visited directory, with two parameters:
+
+1. The visited directory.
+2. The parsed data (all since the beginning, not only the new one from the given directory).
+
+Especially useful for quick debugging with `observer: console.error`, but could be used with Winston loggers or any event-driven trigger.
 
 #### Defaults ####
 
