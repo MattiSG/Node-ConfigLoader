@@ -41,18 +41,18 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 		*/
 		appName:	pathUtils.basename(process.argv[1], '.js'),
 
-		/** Programmatically set default values.
+		/** Programmatically set some values.
 		* If different files can be looked up by this ConfigLoader, this can be a hash of default hashes, whose keys are names of the files that will be looked up.
 		*
 		*@example
 		*	{ 'config': {
-		*		// default values when calling load('config')
+		*		// override values when calling load('config')
 		*	}, 'database': {
-		*		// default values when calling load('database')
+		*		// override values when calling load('database')
 		*	} }
 		*@default	Empty hash.
 		*/
-		defaults:	Object.create(null)	// a simple Hash, with none of the Object methods
+		override:	Object.create(null)	// a simple Hash, with none of the Object methods
 	},
 
 	/** @class	Loads a configuration with cascading overrides.
@@ -74,7 +74,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	load: function load(filename) {
 		this.file = filename;
 
-		this.result = this.options.defaults[filename] || this.options.defaults;
+		this.result = this.options.override[filename] || this.options.override;
 
 		this.loadAllWithin(this.options.from, this.options.to)
 			.loadFromDirectory(pathUtils.join(USER_HOME, '.' + this.options.appName))
