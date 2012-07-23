@@ -107,6 +107,10 @@ Example:
 			}
 		}
 
+#### `debug` ####
+
+If you ever feel the need to understand how the configuration is parsed to pinpoint the source of a specific value, simply pass the `debug: true` option to output every step to `console.error`.
+
 #### Defaults ####
 
 Default values should _not_ be set as options, but set in a config file distributed alongside the application, in order to make them easily editable and to support proper decoupling. Hence, there is no way to set default values from options.

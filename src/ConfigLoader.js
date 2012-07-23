@@ -57,7 +57,13 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 		*@type	{Object}
 		*@default	Empty hash.
 		*/
-		override:	Object.create(null)	// a simple Hash, with none of the Object methods
+		override:	Object.create(null),	// a simple Hash, with none of the Object methods
+
+		/** Debug mode. If set to `true`, will output to `console.error` all visited folders and loaded data.
+		*@type	{Boolean}
+		*@default	false
+		*/
+		debug: false
 	},
 
 	/** @class	Loads a configuration with cascading overrides.
@@ -118,6 +124,8 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	loadFromDirectory: function loadFromDirectory(dir) {
 		var newData = this.parseBestMatch(pathUtils.join(dir, this.file));
 		this.result = Object.merge(newData, this.result);
+		if (this.options.debug)
+			console.error('Loading config from "' + dir + '", now having', newData);
 		return this;
 	},
 
