@@ -12,6 +12,10 @@ var CONFIG_FILE = 'demo-config',
 	MIDDLE_FOLDER_JS = pathUtils.join(OUTER_FOLDER_JS, 'middle'),
 	INNER_FOLDER_JS = pathUtils.join(MIDDLE_FOLDER_JS, 'inner');
 
+assert.undefined = function(value, message) {
+	assert.equal(typeof value, 'undefined' , message);
+}
+
 
 describe('Loading', function() {
 	function middleToOuterTest(loaded) {
@@ -25,7 +29,7 @@ describe('Loading', function() {
 		});
 
 		it('should not visit the inner directories', function() {
-			assert.equal(typeof loaded.inner, 'undefined' , 'Inner folder was visited');
+			assert.undefined(loaded.inner, 'Inner folder was visited');
 		});
 	}
 
@@ -60,7 +64,7 @@ describe('Loading', function() {
 		});
 
 		it('should not visit the outer directory', function() {
-			assert.equal(typeof loaded.outer, 'undefined' , 'Outer folder was visited');
+			assert.undefined(loaded.outer, 'Outer folder was visited');
 		});
 	});
 
@@ -102,7 +106,7 @@ describe('Fuzzy file matching', function() {
 
 		assert.equal(loaded.from, 'outer-json');
 		assert(loaded.json);
-		assert.equal(typeof loaded.outer, 'undefined', 'Outer JS file was loaded while only the JSON file should have been loaded.');
+		assert.undefined(loaded.outer, 'Outer JS file was loaded while only the JSON file should have been loaded.');
 	});
 
 	it('should load an explicitly given .JS file', function() {
@@ -113,7 +117,7 @@ describe('Fuzzy file matching', function() {
 
 		assert.equal(loaded.from, 'outer');
 		assert(loaded.outer);
-		assert.equal(typeof loaded.json, 'undefined', 'Outer JSON file was loaded while only the JS file should have been loaded.');
+		assert.undefined(loaded.json, 'Outer JSON file was loaded while only the JS file should have been loaded.');
 	});
 
 	it('should load all config files when no extension is given', function() {
