@@ -10,7 +10,9 @@ var CONFIG_FILE = 'demo-config',
 	INNER_FOLDER = pathUtils.join(MIDDLE_FOLDER, 'inner'),
 	OUTER_FOLDER_JS = pathUtils.join(__dirname, 'outer-js'),
 	MIDDLE_FOLDER_JS = pathUtils.join(OUTER_FOLDER_JS, 'middle'),
-	INNER_FOLDER_JS = pathUtils.join(MIDDLE_FOLDER_JS, 'inner');
+	INNER_FOLDER_JS = pathUtils.join(MIDDLE_FOLDER_JS, 'inner'),
+	OUTER_MALFORMED_FOLDER = pathUtils.join(__dirname, 'malformed'),
+	MIDDLE_MALFORMED_FOLDER = pathUtils.join(OUTER_MALFORMED_FOLDER, 'middle');
 
 assert.undefined = function(value, message) {
 	assert.equal(typeof value, 'undefined' , message);
@@ -130,3 +132,26 @@ describe('Fuzzy file matching', function() {
 		assert(loaded.json);
 	});
 });
+
+describe('Malformed files', function() {
+	it('should return an empty hash', function() {
+		var loader = new ConfigLoader({
+			from: OUTER_MALFORMED_FOLDER
+		});
+		var loaded = loader.load(CONFIG_FILE);
+
+		for (var k in loaded)
+			assert.fail('Found key "' + k + '" in the loaded hash, while it should have been empty!')
+	});
+
+	it('should not erase previously loaded values', function() {
+		var loader = new ConfigLoader({
+			from: MIDDLE_MALFORMED_FOLDER
+		});
+		var loaded = loader.load(CONFIG_FILE);
+
+		assert.equal(loaded.from, 'middle');
+		assert(loaded.middle);
+		assert.undefined(loaded.outer, 'Outer folder with malformed file was visited');
+	});
+})
