@@ -19,22 +19,23 @@ assert.undefined = function(value, message) {
 }
 
 
+function middleToOuterTest(loaded) {
+	it('should find the middle value', function() {
+		assert.equal(loaded.from, 'middle');
+	});
+
+	it('should visit the outer directories', function() {
+		assert(loaded.middle);
+		assert(loaded.outer, 'Outer folder was not visited');
+	});
+
+	it('should not visit the inner directories', function() {
+		assert.undefined(loaded.inner, 'Inner folder was visited');
+	});
+}
+
+
 describe('Loading', function() {
-	function middleToOuterTest(loaded) {
-		it('should find the middle value', function() {
-			assert.equal(loaded.from, 'middle');
-		});
-
-		it('should visit the outer directories', function() {
-			assert(loaded.middle);
-			assert(loaded.outer, 'Outer folder was not visited');
-		});
-
-		it('should not visit the inner directories', function() {
-			assert.undefined(loaded.inner, 'Inner folder was visited');
-		});
-	}
-
 	it('should not find anything from the package root', function() {
 		var loader = new ConfigLoader();
 
@@ -153,5 +154,55 @@ describe('Malformed files', function() {
 		assert.equal(loaded.from, 'middle');
 		assert(loaded.middle);
 		assert.undefined(loaded.outer, 'Outer folder with malformed file was visited');
+	});
+})
+
+describe('Overrides', function() {
+	it('should ignore loaded values when applied globally', function() {
+		var loader = new ConfigLoader({
+			from: INNER_FOLDER,
+			to: MIDDLE_FOLDER,
+			override: {
+				from: 'middle',
+				outer: true,
+				inner: undefined
+			}
+		});
+		var loaded = loader.load(CONFIG_FILE);
+
+		middleToOuterTest(loaded);
+	});
+
+	it('should load values in missing files when applied globally', function() {
+		var loader = new ConfigLoader({
+			from: INNER_FOLDER,
+			to: MIDDLE_FOLDER,
+			override: {
+				from: 'middle',
+				outer: true,
+				middle: true,
+				inner: undefined
+			}
+		});
+		var loaded = loader.load('no-file-with-such-name');
+
+		middleToOuterTest(loaded);
+	});
+
+	it('should load values only specifically', function() {
+		var loader = new ConfigLoader({
+			override: {
+				'toto': {
+					inToto: true
+				},
+				'titi': {
+					inToto: false
+				}
+			}
+		});
+
+		assert.strictEqual(loader.load('toto').inToto, true);
+		assert.strictEqual(loader.load('titi').inToto, false);
+		assert.undefined(loader.load('tutu').inToto);
 	});
 })
