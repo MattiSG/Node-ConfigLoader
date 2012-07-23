@@ -23,20 +23,24 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	*/
 	options: {
 		/** The directory from which to start looking for configuration files.
+		*@type	{String}
 		*@default	cwd
 		*/
 		from:	process.cwd(),
 		/** The directory at which to end looking for configuration files.
+		*@type	{String}
 		*@default	User’s home directory.
 		*/
 		to:		USER_HOME,
 		/** The directory in which to look for user-specific configuration files.
+		*@type	{String}
 		*@default	User’s home directory.
 		*/
 		user:	USER_HOME,
 
 		/** Name of the directory in which to look for application-specific configuration files.
 		* See step 2 of the lookup algorithm.
+		*@type	{String}
 		*@default	Base name of the executing script.
 		*/
 		appName:	pathUtils.basename(process.argv[1], '.js'),
@@ -50,6 +54,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 		*	}, 'database': {
 		*		// override values when calling load('database')
 		*	} }
+		*@type	{Object}
 		*@default	Empty hash.
 		*/
 		override:	Object.create(null)	// a simple Hash, with none of the Object methods
