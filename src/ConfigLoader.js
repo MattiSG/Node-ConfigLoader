@@ -128,15 +128,17 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 		if (existsSync(file))
 			return this.parse(file, pathUtils.extname(file).slice(1).toLowerCase());
 
+		var result = Object.create(null);
+
 		for (var extension in ConfigLoader.parsers) {
 			if (Object.prototype.hasOwnProperty.call(ConfigLoader.parsers, extension)) {
 				var tentativeName = file + '.' + extension;
 				if (existsSync(tentativeName))	//TODO: what about case sensitivity?
-					return this.parse(tentativeName, extension);
+					result = Object.merge(result, this.parse(tentativeName, extension));
 			}
 		}
 
-		return Object.create(null);
+		return result;
 	},
 
 	/** Returns the contents of the given file, or an empty hash if any error arises.

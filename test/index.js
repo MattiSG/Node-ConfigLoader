@@ -92,3 +92,37 @@ describe('Loading', function() {
 		});
 	});
 });
+
+describe('Fuzzy file matching', function() {
+	it('should load an explicitly given .JSON file', function() {
+		var loader = new ConfigLoader({
+			from: OUTER_FOLDER_JS
+		});
+		var loaded = loader.load(CONFIG_FILE + '.json');
+
+		assert.equal(loaded.from, 'outer-json');
+		assert(loaded.json);
+		assert.equal(typeof loaded.outer, 'undefined', 'Outer JS file was loaded while only the JSON file should have been loaded.');
+	});
+
+	it('should load an explicitly given .JS file', function() {
+		var loader = new ConfigLoader({
+			from: OUTER_FOLDER_JS
+		});
+		var loaded = loader.load(CONFIG_FILE + '.js');
+
+		assert.equal(loaded.from, 'outer');
+		assert(loaded.outer);
+		assert.equal(typeof loaded.json, 'undefined', 'Outer JSON file was loaded while only the JS file should have been loaded.');
+	});
+
+	it('should load all config files when no extension is given', function() {
+		var loader = new ConfigLoader({
+			from: OUTER_FOLDER_JS
+		});
+		var loaded = loader.load(CONFIG_FILE);
+
+		assert(loaded.outer);
+		assert(loaded.json);
+	});
+});
