@@ -126,7 +126,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	*/
 	parseBestMatch: function parseBestMatch(file) {
 		if (existsSync(file))
-			return this.parse(file, path.extname(file).slice(1).toLowerCase());
+			return this.parse(file, pathUtils.extname(file).slice(1).toLowerCase());
 
 		for (var extension in ConfigLoader.parsers) {
 			if (Object.prototype.hasOwnProperty.call(ConfigLoader.parsers, extension)) {
