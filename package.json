@@ -1,15 +1,15 @@
 {
 	"name":	"mattisg.configloader",
-	"version":	"0.1.2-alpha",
+	"version":	"0.1.2-beta",
 	
-	"description":	"A configuration loader focused on handling overrides cascades..",
+	"description":	"A configuration loader focused on handling overrides cascades.",
 	"keywords":	"configuration, config",
 	
 	"homepage":	"https://github.com/MattiSG/Node-ConfigLoader#readme",
 	"bugs":		"https://github.com/MattiSG/Node-ConfigLoader/issues",
 	"author":	"Matti Schneider <hi@mattischneider.fr> (http://mattischneider.fr)",
 	
-	"files":	[ "src" ],
+	"files":	[ "README.md", "src" ],
 	"main":		"src/ConfigLoader.js",
 	"directories": {
 		"lib": "./src"
