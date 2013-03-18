@@ -1,18 +1,20 @@
 require('mocha');
-var assert = require('assert'),	// no point in using should, as config objects have no prototype, hence no “should” augmentation
-	pathUtils = require('path');
+var assert		= require('assert'),	// no point in using should, as config objects have no prototype, hence no “should” augmentation
+	pathUtils	= require('path'),
+	fs			= require('fs');
 
 var ConfigLoader = require('../' + (process.env.npm_config_coverage ? 'build' : 'src') + '/ConfigLoader');
 
-var CONFIG_FILE = 'demo-config',
-	OUTER_FOLDER = pathUtils.join(__dirname, 'outer'),
-	MIDDLE_FOLDER = pathUtils.join(OUTER_FOLDER, 'middle'),
-	INNER_FOLDER = pathUtils.join(MIDDLE_FOLDER, 'inner'),
-	OUTER_FOLDER_JS = pathUtils.join(__dirname, 'outer-js'),
-	MIDDLE_FOLDER_JS = pathUtils.join(OUTER_FOLDER_JS, 'middle'),
-	INNER_FOLDER_JS = pathUtils.join(MIDDLE_FOLDER_JS, 'inner'),
-	OUTER_MALFORMED_FOLDER = pathUtils.join(__dirname, 'malformed'),
-	MIDDLE_MALFORMED_FOLDER = pathUtils.join(OUTER_MALFORMED_FOLDER, 'middle');
+var CONFIG_FILE				= 'demo-config',
+	OUTER_FOLDER			= pathUtils.join(__dirname, 'outer'),
+	MIDDLE_FOLDER			= pathUtils.join(OUTER_FOLDER, 'middle'),
+	INNER_FOLDER			= pathUtils.join(MIDDLE_FOLDER, 'inner'),
+	OUTER_FOLDER_JS			= pathUtils.join(__dirname, 'outer-js'),
+	MIDDLE_FOLDER_JS		= pathUtils.join(OUTER_FOLDER_JS, 'middle'),
+	INNER_FOLDER_JS			= pathUtils.join(MIDDLE_FOLDER_JS, 'inner'),
+	OUTER_MALFORMED_FOLDER	= pathUtils.join(__dirname, 'malformed'),
+	MIDDLE_MALFORMED_FOLDER	= pathUtils.join(OUTER_MALFORMED_FOLDER, 'middle'),
+	APP_ROOT_FOLDER			= pathUtils.dirname(process.argv[1]);
 
 assert.undefined = function(value, message) {
 	assert.equal(typeof value, 'undefined' , message);
@@ -96,6 +98,25 @@ describe('Loading', function() {
 
 		it('should have magic variables', function() {
 			assert.equal(loaded.filename, pathUtils.join(MIDDLE_FOLDER_JS, CONFIG_FILE + '.js'));
+		});
+	});
+
+	describe('from the application root', function() {
+		var loader	= new ConfigLoader(),
+			file	= pathUtils.join(APP_ROOT_FOLDER, CONFIG_FILE + '.json'),
+			loaded;
+
+		before(function() {
+			fs.writeFileSync(file, '{"found": true}');
+			loaded = loader.load(CONFIG_FILE);
+		});
+
+		after(function() {
+			fs.unlinkSync(file);
+		});
+
+		it('should load defaults from the executable file directory', function() {
+			assert(loaded.found, 'The default value was not loaded.');
 		});
 	});
 });

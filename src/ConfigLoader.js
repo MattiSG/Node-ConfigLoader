@@ -93,7 +93,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 
 		this.loadAllWithin(this.options.from, this.options.to)
 			.loadFromDirectory(pathUtils.join(USER_HOME, '.' + this.options.appName))
-			.loadFromDirectory(process.argv[1]);
+			.loadFromDirectory(pathUtils.dirname(process.argv[1]));
 
 		return this.result;
 	},
