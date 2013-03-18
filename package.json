@@ -4,9 +4,9 @@
 	"version":	"0.1.2",
 
 	"description":	"A configuration loader focused on handling overrides cascades.",
-	"keywords":	"configuration, config",
+	"keywords":	["configuration", "config", "setup", "defaults", "options", "init", "initialization"],
 
-	"homepage":	"https://github.com/MattiSG/Node-ConfigLoader#readme",
+	"homepage":	"https://github.com/MattiSG/Node-ConfigLoader#README",
 	"bugs":		"https://github.com/MattiSG/Node-ConfigLoader/issues",
 	"author":	"Matti Schneider <hi@mattischneider.fr> (http://mattischneider.fr)",
 
