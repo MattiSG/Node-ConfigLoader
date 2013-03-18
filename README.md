@@ -12,7 +12,7 @@ There are already tons of config loaders for Node, but I couldn't find any that 
 
 1. Start looking in the given directory (default to `cwd`), all the way up to another directory (default to user’s `$HOME`).
 2. Look in `$HOME/.<appname>/` (user config).
-3. Look in app default (`dirname($0)/config`).
+3. Look in app defaults, (executable root, equivalent to `dirname($0)`).
 
 The above gives the order of priority between properties: app defaults are of course overridden by the more specific directories.
 
@@ -45,7 +45,7 @@ You can also apply those options later, by calling `setOptions({ option: value, 
 By default, the ConfigLoader’s first pass will look for files from the current working directory (think `pwd`) all the way up to `~`. You can restrict this navigation algorithm to whichever subset you want, or redefine it entirely, with the `from` and `to` options.
 
 Example:
-	
+
 	// in /usr/toto/dev/toto.js
 	new ConfigLoader({
 		from: __dirname + '/config/host'
@@ -65,7 +65,7 @@ The above will load data from, in precedence order:
 The above `<app_name>` defaults to the name of the running script. For example, if your application is executed by `node toto.js`, `<app_name>` will be `toto`, giving a default user preference folder of `~/.toto`.
 
 You can override this heuristic with the `appName` option.
-	
+
 	// in /usr/toto/dev/toto.js
 	new ConfigLoader({
 		appName: 'yogurt'
