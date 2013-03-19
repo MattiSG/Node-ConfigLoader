@@ -226,6 +226,17 @@ describe('Overrides', function() {
 		assert.strictEqual(loader.load('titi').inToto, false);
 		assert.undefined(loader.load('tutu').inToto);
 	});
+
+	it('should not do anything with undefined override option', function() {
+		var override;
+		var loader = new ConfigLoader({
+			from	: MIDDLE_FOLDER,
+			override: override
+		});
+		var loaded = loader.load(CONFIG_FILE);
+
+		middleToOuterTest(loaded);
+	});
 });
 
 describe('Observer option', function() {

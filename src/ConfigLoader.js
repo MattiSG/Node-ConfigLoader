@@ -60,7 +60,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 		*@type	{Object}
 		*@default	Empty hash.
 		*/
-		override:	Object.create(null),	// a simple Hash, with none of the Object methods
+		override:	null,
 
 		/** If set to a function, will call it for each encountered directory, with two parameters:
 		* 1. The visited directory.
@@ -77,7 +77,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	* The lookup algorithm is as follows:
 	* 1. Start looking in the given directory (default to `cwd`), all the way up to another directory (default to user’s `$HOME`).
 	* 2. Look in `$HOME/.<appname>/` (user config).
-	* 3. Look in app default (`dirname($0)/config`).
+	* 3. Look in app default (`dirname($0)`).
 	*
 	*@constructs
 	*/
@@ -92,7 +92,9 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	load: function load(filename) {
 		this.file = filename;
 
-		this.result = this.options.override[filename] || this.options.override;
+		this.result =  (this.options.override
+						? this.options.override[filename] || this.options.override
+						: Object.create(null));	// a simple Hash, with none of the Object methods
 
 		this.loadAllWithin(this.options.from, this.options.to)
 			.loadFromDirectory(pathUtils.join(USER_HOME, '.' + this.options.appName))
