@@ -55,7 +55,7 @@ describe('Loading', function() {
 	describe('when given the inner folders only', function() {
 		var loader = new ConfigLoader({
 			from: INNER_FOLDER,
-			to: MIDDLE_FOLDER
+			to	: MIDDLE_FOLDER
 		});
 		var loaded = loader.load(CONFIG_FILE);
 
@@ -76,7 +76,7 @@ describe('Loading', function() {
 	describe('when given the inner folders and a config file starting with "../"', function() {
 		var loader = new ConfigLoader({
 			from: INNER_FOLDER,
-			to: MIDDLE_FOLDER
+			to	: MIDDLE_FOLDER
 		});
 		var loaded = loader.load(pathUtils.join('..', CONFIG_FILE));
 
@@ -86,7 +86,7 @@ describe('Loading', function() {
 	describe('of the middle folder with JS module.exports config', function() {
 		var loader = new ConfigLoader({
 			from: MIDDLE_FOLDER_JS,
-			to: OUTER_FOLDER_JS
+			to	: OUTER_FOLDER_JS
 		});
 		var loaded = loader.load(CONFIG_FILE);
 
@@ -184,9 +184,9 @@ describe('Overrides', function() {
 			from: INNER_FOLDER,
 			to: MIDDLE_FOLDER,
 			override: {
-				from: 'middle',
-				outer: true,
-				inner: undefined
+				from	: 'middle',
+				outer	: true,
+				inner	: undefined
 			}
 		});
 		var loaded = loader.load(CONFIG_FILE);
@@ -199,10 +199,10 @@ describe('Overrides', function() {
 			from: INNER_FOLDER,
 			to: MIDDLE_FOLDER,
 			override: {
-				from: 'middle',
-				outer: true,
-				middle: true,
-				inner: undefined
+				from	: 'middle',
+				outer	: true,
+				middle	: true,
+				inner	: undefined
 			}
 		});
 		var loaded = loader.load('no-file-with-such-name');
@@ -240,7 +240,7 @@ describe('Overrides', function() {
 });
 
 describe('Observer option', function() {
-	it ('should call the observer function', function() {
+	it ('should be called', function() {
 		var visited = false;
 
 		new ConfigLoader({
@@ -252,5 +252,37 @@ describe('Observer option', function() {
 		}).load(CONFIG_FILE);
 
 		assert(visited, 'Nothing was logged in debug mode!');
+	})
+});
+
+describe('Transform option', function() {
+	it ('should be called', function(done) {
+		var called = false,	// avoid multiple calls to done
+			loader = new ConfigLoader({
+				from: INNER_FOLDER,
+				to	: MIDDLE_FOLDER,
+				transform	: function() {
+					if (! called) {
+						called = true;
+						done();
+					}
+				}
+			});
+
+		loader.load(CONFIG_FILE);
+	});
+
+	it('should store only its result', function() {
+		var returned = { transformed: true };
+
+		var loader = new ConfigLoader({
+			transform	: function() {
+				return returned;
+			}
+		});
+
+		var loaded = loader.load(CONFIG_FILE);
+
+		assert.deepEqual(loaded, returned);
 	})
 });

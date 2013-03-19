@@ -70,7 +70,18 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 		*@type	{Function}
 		*@default	false
 		*/
-		observer:	false
+		observer:	false,
+
+		/** If set to a function, will call it each time data is about to be added, storing the returned value instead of the original data.
+		* Called with the following parameters:
+		* 1. The data that is about to be added.
+		* 2. The data that is already stored.
+		* The return type must be an object, so that it can be stored.
+		*
+		*@type	{Function}
+		*@default	false
+		*/
+		transform:	false
 	},
 
 	/** @class	Loads a configuration with cascading overrides.
@@ -83,6 +94,12 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	*/
 	initialize: function init(options) {
 		this.setOptions(options);
+
+		if (this.options.observer && typeof this.options.observer != 'function')
+			throw new TypeError('The "observer" option must be either `false` or a function');
+
+		if (this.options.transform && typeof this.options.transform != 'function')
+			throw new TypeError('The "transform" option must be either `false` or a function');
 	},
 
 	/** Loads all config to be found for the given filename, across all search domains.
@@ -92,11 +109,10 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	load: function load(filename) {
 		this.file = filename;
 
-		this.result = Object.create(null);
+		this.result = Object.create(null);	// a simple Hash, with none of the Object methods
 
-		this.loadData(this.options.override
-					  ? this.options.override[filename] || this.options.override
-					  : Object.create(null));	// a simple Hash, with none of the Object methods
+		if (this.options.override)
+			this.loadData(this.options.override[this.file] || this.options.override);
 
 		this.loadAllWithin(this.options.from, this.options.to)
 			.loadFromDirectory(pathUtils.join(USER_HOME, '.' + this.options.appName))
@@ -112,6 +128,9 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	*@private
 	*/
 	loadData: function loadData(data) {
+		if (this.options.transform)
+			data = this.options.transform(data, this.result);
+
 		this.result = Object.merge(data, this.result);
 
 		return this.result;
