@@ -92,13 +92,27 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	load: function load(filename) {
 		this.file = filename;
 
-		this.result =  (this.options.override
-						? this.options.override[filename] || this.options.override
-						: Object.create(null));	// a simple Hash, with none of the Object methods
+		this.result = Object.create(null);
+
+		this.loadData(this.options.override
+					  ? this.options.override[filename] || this.options.override
+					  : Object.create(null));	// a simple Hash, with none of the Object methods
 
 		this.loadAllWithin(this.options.from, this.options.to)
 			.loadFromDirectory(pathUtils.join(USER_HOME, '.' + this.options.appName))
 			.loadFromDirectory(pathUtils.dirname(process.argv[1]));
+
+		return this.result;
+	},
+
+	/** Adds the given data to the loaded config.
+	*
+	*@param		{Hash}	data	The values to load.
+	*@returns	{Hash}	A hash with all loaded values.
+	*@private
+	*/
+	loadData: function loadData(data) {
+		this.result = Object.merge(data, this.result);
 
 		return this.result;
 	},
@@ -132,9 +146,12 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	*/
 	loadFromDirectory: function loadFromDirectory(dir) {
 		var newData = this.parseBestMatch(pathUtils.join(dir, this.file));
-		this.result = Object.merge(newData, this.result);
+
+		this.loadData(newData);
+
 		if (this.options.observer)
-			this.options.observer(dir, newData);
+			this.options.observer(dir, this.result);
+
 		return this;
 	},
 
