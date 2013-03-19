@@ -22,16 +22,19 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	/** These options can be set either by passing them to the constructor, or by later calling `setOptions` and passing a hash with the ones to override.
 	*/
 	options: {
+
 		/** The directory from which to start looking for configuration files.
 		*@type	{String}
 		*@default	cwd
 		*/
 		from:	process.cwd(),
+
 		/** The directory at which to end looking for configuration files.
 		*@type	{String}
 		*@default	User’s home directory.
 		*/
 		to:		USER_HOME,
+
 		/** The directory in which to look for user-specific configuration files.
 		*@type	{String}
 		*@default	User’s home directory.
@@ -67,7 +70,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 		*@type	{Function}
 		*@default	false
 		*/
-		observer: false
+		observer:	false
 	},
 
 	/** @class	Loads a configuration with cascading overrides.
@@ -104,14 +107,14 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	*@private
 	*/
 	loadAllWithin: function loadAllWithin(from, to) {
-		var cwd = fs.realpathSync(from),
-			prevCwd,
-			to = fs.realpathSync(to);
+		var cwd	= fs.realpathSync(from),
+			to	= fs.realpathSync(to),
+			prevCwd;
 
 		do {
 			this.loadFromDirectory(cwd);
-			prevCwd = cwd;	// used to check whether the root was reached (dirname('/') == '/', but has to be cross-platform)
-			cwd = pathUtils.dirname(cwd);
+			prevCwd	= cwd;	// used to check whether the root was reached (dirname('/') == '/', but has to be cross-platform)
+			cwd		= pathUtils.dirname(cwd);
 		} while (cwd != prevCwd
 				 && cwd.indexOf(to) === 0);	// go up the directory tree only as long as we're above the limit directory
 
@@ -181,8 +184,8 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 * 2. file path.
 */
 ConfigLoader.parsers = {
-	'json': JSON.parse,
-	'js': function(contents, path) { return require(path); }
+	'json'	: JSON.parse,
+	'js'	: function(contents, path) { return require(path); }
 }
 
 module.exports = ConfigLoader;	// CommonJS export
