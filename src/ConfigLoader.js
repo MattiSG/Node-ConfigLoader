@@ -87,7 +87,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 
 	/** Loads all config to be found for the given filename, across all search domains.
 	*
-	*@return	{Hash}	A hash with all loaded values.
+	*@returns	{Hash}	A hash with all loaded values.
 	*/
 	load: function load(filename) {
 		this.file = filename;
@@ -105,7 +105,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 
 	/** Adds to the result all config files found between the two given directories.
 	*
-	*@return	{ConfigLoader}	this, for chainability.
+	*@returns	{ConfigLoader}	this, for chainability.
 	*@private
 	*/
 	loadAllWithin: function loadAllWithin(from, to) {
@@ -126,7 +126,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	/** Merges the current config with the one to be found in the given directory.
 	* If no file is found, the config is not changed.
 	*
-	*@return	{ConfigLoader}	this, for chainability.
+	*@returns	{ConfigLoader}	this, for chainability.
 	*@see	#result
 	*@private
 	*/
@@ -142,8 +142,8 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	* If the given file is an exact match, the parser to use is determined from its extension.
 	* Otherwise, all extensions defined in the static `parsers` hash will be attempted, until there is a match.
 	*
-	*@param	{String}	file	A path to a specific file, or to a file without an extension.
-	*@return	{Object}	The parsed contents of the best matching file, or an empty hash if any error arises or no file matches.
+	*@param		{String}	file	A path to a specific file, or to a file without an extension.
+	*@returns	{Hash}		The parsed contents of the best matching file, or an empty hash if any error arises or no file matches.
 	*@private
 	*/
 	parseBestMatch: function parseBestMatch(file) {
@@ -165,9 +165,9 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 
 	/** Returns the contents of the given file, or an empty hash if any error arises.
 	*
-	*@param	{String}	file	The path to the file to be parsed.
-	*@param	{String}	type	File extension declared in the `parsers` hash.
-	*@return	{Object}	The parsed contents of the given file.
+	*@param		{String}	file	The path to the file to be parsed.
+	*@param		{String}	type	File extension declared in the `parsers` hash.
+	*@returns	{Object}	The parsed contents of the given file.
 	*@private
 	*/
 	parse: function parse(file, type) {
