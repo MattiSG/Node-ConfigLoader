@@ -82,6 +82,12 @@ You can also override the `~` in `~/.<app_name>` for user-specific preferences, 
 
 …would give a much more OSX-like lookup, by looking in `~/Library/Preferences/com.dairy.yogurt/` for `config.*` files.
 
+#### `visitAlso` ####
+
+If you need to load defaults from more unusual locations, or if your module may be executed from different binaries (thus making the “executable root” heuristic non-effective), you may specify default folders to visit with this option.
+
+You may set either a single folder path as a String, or an array of folder paths, which will be visited in the given order. In all cases, they will be loaded _after_ the places defined by the standard algorithm.
+
 #### Programmatic `override` ####
 
 If you want to ignore some values from the loaded configuration at runtime, simply use the `override` option. It can be thought of defaults, but in reverse: instead of being values to use if none other are specified, those will always be used, no matter what config files say.
