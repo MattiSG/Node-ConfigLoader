@@ -116,6 +116,30 @@ If you ever feel the need to understand how the configuration is parsed to pinpo
 
 Especially useful for quick debugging with `observer: console.error`, but could be used with Winston loggers or any event-driven trigger.
 
+#### `transform` ####
+
+You may want to support shortcuts in your config files, in order to make the specification simpler, while still supporting advanced overrides. The `transform` option is a function, which will be called each time some config data is about to be loaded, with two parameters:
+
+1. The about-to-be-loaded data.
+2. The already-stored data (all since the beginning).
+
+What will be stored at that step is **only** the return value from the provided function.
+
+**Example**:
+
+Support an URL to be specified as either a string or an [URL object](http://nodejs.org/docs/v0.8.16/api/url.html), uniforming the type to an object, therefore allowing specific overrides:
+
+	new ConfigLoader({
+		transform: function objectifyUrl(data) {
+			if (typeof data.url == 'string')
+				data.url = require('url').parse(data.url);
+
+			return data;	// remember to return your results, otherwise nothing will be stored!
+		}
+	});
+
+The above allows any configuration file to specify either a full URL as a string, or provide only parts of it (e.g. `{ url: { port: 3000 } }`), while ensuring the previously extracted values will be kept.
+
 #### Defaults ####
 
 Default values should _not_ be set as options, but set in a config file distributed alongside the application, in order to make them easily editable and to support proper decoupling. Hence, there is no way to set default values from options.
