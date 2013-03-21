@@ -241,7 +241,7 @@ describe('Overrides', function() {
 });
 
 describe('Observer option', function() {
-	it ('should be called', function() {
+	it('should be called', function() {
 		var visited = false;
 
 		new ConfigLoader({
@@ -257,7 +257,7 @@ describe('Observer option', function() {
 });
 
 describe('Transform option', function() {
-	it ('should be called', function(done) {
+	it('should be called', function(done) {
 		var called = false,	// avoid multiple calls to done
 			loader = new ConfigLoader({
 				from: INNER_FOLDER,

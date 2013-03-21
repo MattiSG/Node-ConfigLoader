@@ -20,22 +20,27 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	Implements: Options,
 
 	/** These options can be set either by passing them to the constructor, or by later calling `setOptions` and passing a hash with the ones to override.
+	*
+	*@namespace
 	*/
 	options: {
 
 		/** The directory from which to start looking for configuration files.
+		*
 		*@type	{String}
 		*@default	cwd
 		*/
 		from:	process.cwd(),
 
 		/** The directory at which to end looking for configuration files.
+		*
 		*@type	{String}
 		*@default	User’s home directory.
 		*/
 		to:		USER_HOME,
 
 		/** The directory in which to look for user-specific configuration files.
+		*
 		*@type	{String}
 		*@default	User’s home directory.
 		*/
@@ -43,6 +48,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 
 		/** Name of the directory in which to look for application-specific configuration files.
 		* See step 2 of the lookup algorithm.
+		*
 		*@type	{String}
 		*@default	Base name of the executing script.
 		*/
