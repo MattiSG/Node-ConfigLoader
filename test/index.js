@@ -14,7 +14,8 @@ var CONFIG_FILE				= 'demo-config',
 	INNER_FOLDER_JS			= pathUtils.join(MIDDLE_FOLDER_JS, 'inner'),
 	OUTER_MALFORMED_FOLDER	= pathUtils.join(__dirname, 'malformed'),
 	MIDDLE_MALFORMED_FOLDER	= pathUtils.join(OUTER_MALFORMED_FOLDER, 'middle'),
-	APP_ROOT_FOLDER			= pathUtils.dirname(process.argv[1]);
+	APP_ROOT_FOLDER			= pathUtils.dirname(process.argv[1]),
+	ADDITIONAL_DIR			= pathUtils.join(__dirname, 'additional');
 
 assert.undefined = function(value, message) {
 	assert.equal(typeof value, 'undefined' , message);
@@ -285,4 +286,30 @@ describe('Transform option', function() {
 
 		assert.deepEqual(loaded, returned);
 	})
+});
+
+describe('visitAlso option', function() {
+	it('should be respected', function() {
+		var loader = new ConfigLoader({
+			from		: OUTER_FOLDER,
+			visitAlso	: [ ADDITIONAL_DIR ]
+		});
+
+		var loaded = loader.load(CONFIG_FILE);
+
+		assert(loaded.additional, 'The additional folder specified with visitAlso was not loaded');
+		assert.notEqual(loaded.from, 'additional');
+	});
+
+	it('should be able to be specified with a String only', function() {
+		var loader = new ConfigLoader({
+			from		: OUTER_FOLDER,
+			visitAlso	: ADDITIONAL_DIR
+		});
+
+		var loaded = loader.load(CONFIG_FILE);
+
+		assert(loaded.additional, 'The additional folder specified with visitAlso was not loaded');
+		assert.notEqual(loaded.from, 'additional');
+	});
 });

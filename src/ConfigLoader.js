@@ -48,6 +48,12 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 		*/
 		appName:	pathUtils.basename(process.argv[1], '.js'),
 
+		/** Directories paths to visit additionally, after the standard lookup algorithm is done.
+		*
+		*@type	{Array.<String>}
+		*/
+		visitAlso:	[],
+
 		/** Programmatically set some values.
 		* If different files can be looked up by this ConfigLoader, this can be a hash of default hashes, whose keys are names of the files that will be looked up.
 		*
@@ -100,6 +106,9 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 
 		if (this.options.transform && typeof this.options.transform != 'function')
 			throw new TypeError('The "transform" option must be either `false` or a function');
+
+		if (typeof this.options.visitAlso == 'string')
+			this.options.visitAlso = [ this.options.visitAlso ];	// shortcut
 	},
 
 	/** Loads all config to be found for the given filename, across all search domains.
@@ -117,6 +126,8 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 		this.loadAllWithin(this.options.from, this.options.to)
 			.loadFromDirectory(pathUtils.join(USER_HOME, '.' + this.options.appName))
 			.loadFromDirectory(pathUtils.dirname(process.argv[1]));
+
+		this.options.visitAlso.each(this.loadFromDirectory, this);
 
 		return this.result;
 	},
