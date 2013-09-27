@@ -28,7 +28,7 @@
 		"mootools": "1.4"
 	},
 	"devDependencies": {
-		"mocha": "1.8",
+		"mocha": ">= 1.8",
 		"istanbul": "0.1"
 	},
 
