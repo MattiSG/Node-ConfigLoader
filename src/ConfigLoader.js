@@ -96,6 +96,13 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 		transform:	false
 	},
 
+	/** Storage for in-progress parsing.
+	*
+	*@type	{Object}
+	*@private
+	*/
+	result:	{},
+
 	/** @class	Loads a configuration with cascading overrides.
 	* The lookup algorithm is as follows:
 	* 1. Start looking in the given directory (default to `cwd`), all the way up to another directory (default to user’s `$HOME`).
@@ -124,7 +131,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	load: function load(filename) {
 		this.file = filename;
 
-		this.result = Object.create(null);	// a simple Hash, with none of the Object methods
+		this.result = {};
 
 		if (this.options.override)
 			this.loadData(this.options.override[this.file] || this.options.override);
