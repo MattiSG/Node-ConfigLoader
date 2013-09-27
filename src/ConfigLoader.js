@@ -177,7 +177,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	* If no file is found, the config is not changed.
 	*
 	*@returns	{ConfigLoader}	this, for chainability.
-	*@see	#result
+	*@see	result
 	*@private
 	*/
 	loadFromDirectory: function loadFromDirectory(dir) {

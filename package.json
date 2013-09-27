@@ -29,7 +29,8 @@
 	},
 	"devDependencies": {
 		"mocha": ">= 1.8",
-		"istanbul": "0.1"
+		"istanbul": "0.1",
+		"jsdoc": "3.2"
 	},
 
 	"scripts": {
