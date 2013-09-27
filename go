@@ -26,12 +26,6 @@ open() {
 case "$1" in
 	test )
 		$BIN_DIR/mocha $TEST_DIR ;;
-	coverage )	# based on http://tjholowaychuk.com/post/18175682663
-		rm -rf $BUILD_DIR
-		$JSCOVERAGE $SRC_DIR $BUILD_DIR
-		export npm_config_coverage=true
-		$BIN_DIR/mocha $TEST_DIR --reporter html-cov > $TEST_DIR/coverage.html &&
-		open $TEST_DIR/coverage.html ;;
 	doc )
 		if [[ $2 = "private" ]]
 		then opts='-p'
