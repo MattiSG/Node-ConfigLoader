@@ -3,13 +3,8 @@
 BASEDIR="$(dirname $0)"
 BASEDIR=$BASEDIR/$(dirname $(readlink $0) 2> /dev/null)	# readlink for NPM global install alias; error redirection in case of direct invocation, in which case readlink returns nothing
 SRC_DIR="$BASEDIR/src"
-BUILD_DIR="$BASEDIR/build"
-BIN_DIR="$BASEDIR/node_modules/.bin/"
-TEST_DIR="$BASEDIR/test"
 DOC_DIR="$BASEDIR/doc"
 JSDOC_DIR="/usr/local/Cellar/jsdoc-toolkit/2.4.0/libexec/jsdoc-toolkit"	#TODO: make this more shareable
-DIST_DIR="$BASEDIR/dist"
-JSCOVERAGE="$BASEDIR/node_modules/visionmedia-jscoverage/jscoverage"
 
 
 # Cross-platform Darwin open(1)
@@ -24,8 +19,6 @@ open() {
 
 
 case "$1" in
-	test )
-		$BIN_DIR/mocha $TEST_DIR ;;
 	doc )
 		if [[ $2 = "private" ]]
 		then opts='-p'
