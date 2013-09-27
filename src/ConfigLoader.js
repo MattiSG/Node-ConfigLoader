@@ -216,19 +216,16 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 		return result;
 	},
 
-	/** Returns the contents of the given file, or an empty hash if any error arises.
+	/** Returns the contents of the given file.
 	*
 	*@param		{String}	file	The path to the file to be parsed.
 	*@param		{String}	type	File extension declared in the `parsers` hash.
 	*@returns	{Object}	The parsed contents of the given file.
+	*@throws	{Error}		Throws the parser's error if the file could not be parsed properly.
 	*@private
 	*/
 	parse: function parse(file, type) {
-		try {
-			return ConfigLoader.parsers[type](fs.readFileSync(file, 'utf-8'), file);
-		} catch (e) {
-			return Object.create(null);	// a simple Hash, with none Object methods
-		}
+		return ConfigLoader.parsers[type](fs.readFileSync(file, 'utf-8'), file);
 	}
 });
 

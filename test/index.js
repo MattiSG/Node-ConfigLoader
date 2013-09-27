@@ -157,27 +157,13 @@ describe('Fuzzy file matching', function() {
 });
 
 describe('Malformed files', function() {
-	it('should return an empty hash', function() {
-		var loader = new ConfigLoader({
-			from: OUTER_MALFORMED_FOLDER
-		});
-		var loaded = loader.load(CONFIG_FILE);
-
-		for (var k in loaded)
-			assert.fail('Found key "' + k + '" in the loaded hash, while it should have been empty!')
-	});
-
-	it('should not erase previously loaded values', function() {
+	it('should throw', function() {
 		var loader = new ConfigLoader({
 			from: MIDDLE_MALFORMED_FOLDER
 		});
-		var loaded = loader.load(CONFIG_FILE);
-
-		assert.equal(loaded.from, 'middle');
-		assert(loaded.middle);
-		assert.undefined(loaded.outer, 'Outer folder with malformed file was visited');
+		assert.throws(loader.load.bind(loader, CONFIG_FILE), SyntaxError);
 	});
-})
+});
 
 describe('Overrides', function() {
 	it('should ignore loaded values when applied globally', function() {
