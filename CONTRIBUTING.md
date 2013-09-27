@@ -20,6 +20,6 @@ Make sure everything is properly tested by checking code coverage:
 
 Documentation has to be written with the [JSdoc syntax](http://code.google.com/p/jsdoc-toolkit/wiki/TagReference). Please make sure your code is properly documented with:
 
-	node_modules/.bin/jsdoc --private src --destination doc
+	npm run-script doc
 
 If your code has been properly tested and documented, simply open a pull request and I'll do my best to review and merge it promptly  :)
