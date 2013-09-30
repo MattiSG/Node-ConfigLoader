@@ -9,6 +9,7 @@ var CONFIG_FILE				= 'demo-config',
 	OUTER_FOLDER			= pathUtils.join(__dirname, 'outer'),
 	MIDDLE_FOLDER			= pathUtils.join(OUTER_FOLDER, 'middle'),
 	INNER_FOLDER			= pathUtils.join(MIDDLE_FOLDER, 'inner'),
+	EMPTY_FOLDER			= pathUtils.join(INNER_FOLDER, 'empty'),
 	OUTER_FOLDER_JS			= pathUtils.join(__dirname, 'outer-js'),
 	MIDDLE_FOLDER_JS		= pathUtils.join(OUTER_FOLDER_JS, 'middle'),
 	INNER_FOLDER_JS			= pathUtils.join(MIDDLE_FOLDER_JS, 'inner'),
@@ -165,6 +166,18 @@ describe('Malformed files', function() {
 	});
 });
 
+describe('Empty directories', function() {
+	it('should be ignored', function() {
+		var loader = new ConfigLoader({
+			from: EMPTY_FOLDER
+		});
+		var loaded = loader.load(CONFIG_FILE);
+
+		assert(loaded.inner);
+		assert(loaded.middle);
+		assert(loaded.outer);
+	});
+});
 describe('Overrides', function() {
 	it('should ignore loaded values when applied globally', function() {
 		var loader = new ConfigLoader({
