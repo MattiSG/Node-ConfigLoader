@@ -207,7 +207,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	*@private
 	*/
 	parseBestMatch: function parseBestMatch(file) {
-		if (existsSync(file))
+		if (existsSync(file) && fs.statSync(file).isFile())
 			return this.parse(file, pathUtils.extname(file).slice(1).toLowerCase());
 
 		var result = {};
@@ -215,7 +215,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 		for (var extension in ConfigLoader.parsers) {
 			if (Object.prototype.hasOwnProperty.call(ConfigLoader.parsers, extension)) {
 				var tentativeName = file + '.' + extension;
-				if (existsSync(tentativeName))	//TODO: what about case sensitivity?
+				if (existsSync(tentativeName) && fs.statSync(tentativeName).isFile())	//TODO: what about case sensitivity?
 					result = Object.merge(result, this.parse(tentativeName, extension));
 			}
 		}

@@ -16,7 +16,8 @@ var CONFIG_FILE				= 'demo-config',
 	OUTER_MALFORMED_FOLDER	= pathUtils.join(__dirname, 'malformed'),
 	MIDDLE_MALFORMED_FOLDER	= pathUtils.join(OUTER_MALFORMED_FOLDER, 'middle'),
 	APP_ROOT_FOLDER			= pathUtils.dirname(process.argv[1]),
-	ADDITIONAL_DIR			= pathUtils.join(__dirname, 'additional');
+	ADDITIONAL_DIR			= pathUtils.join(__dirname, 'additional'),
+	WITH_FOLDERS_FOLDER		= pathUtils.join(__dirname, 'with-folders');
 
 assert.undefined = function(value, message) {
 	assert.equal(typeof value, 'undefined' , message);
@@ -178,6 +179,18 @@ describe('Empty directories', function() {
 		assert(loaded.outer);
 	});
 });
+
+describe('Directories with name of the requested file', function() {
+	it('should be ignored', function() {
+		var loader = new ConfigLoader({
+			from: WITH_FOLDERS_FOLDER
+		});
+		var loaded = loader.load(CONFIG_FILE);
+
+		assert.equal(loaded.from, 'with-folders');
+	});
+});
+
 describe('Overrides', function() {
 	it('should ignore loaded values when applied globally', function() {
 		var loader = new ConfigLoader({
