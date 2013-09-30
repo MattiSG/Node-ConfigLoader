@@ -210,7 +210,7 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 		if (existsSync(file))
 			return this.parse(file, pathUtils.extname(file).slice(1).toLowerCase());
 
-		var result = Object.create(null);
+		var result = {};
 
 		for (var extension in ConfigLoader.parsers) {
 			if (Object.prototype.hasOwnProperty.call(ConfigLoader.parsers, extension)) {
