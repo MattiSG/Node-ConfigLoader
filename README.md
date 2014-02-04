@@ -165,3 +165,10 @@ Fuzzy matching warning
 If several files in the same format are available at the same depth (i.e. you have `config.js` and `config.json` in the same folder), **the precedence is unspecified**. There is no way to know for sure whether values from the `.js` will override the ones from the `.json`, or if it will be the other way around. The only certain thing is that will take precedence for _all_ keys, i.e. the precedence is unspecified at file level, not at individual properties level.
 
 Beyond this overriding specificity, non-conflicting values will all be loaded.
+
+
+Alternatives
+------------
+
+- Lighter: [`configvention`](https://github.com/joelpurra/nodejs-configvention) by Joel Purra. Uses the following lookup algorithm: arguments > environment > config.json > config.defaults.json.
+- Heavier: [`nconf`](https://github.com/flatiron/nconf). Gives full control over loading order, allows programmatic defaults, and saving to a file.
