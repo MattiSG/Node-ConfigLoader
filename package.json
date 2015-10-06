@@ -1,10 +1,12 @@
 {
 	"name":	"mattisg.configloader",
 
-	"version":	"0.2.0",
+	"version":	"0.2.1",
 
 	"description":	"A configuration loader focused on handling overrides cascades.",
 	"keywords":	["configuration", "config", "setup", "defaults", "options", "init", "initialization"],
+
+	"license":	"MIT",
 
 	"homepage":	"https://github.com/MattiSG/Node-ConfigLoader#README",
 	"bugs":		"https://github.com/MattiSG/Node-ConfigLoader/issues",

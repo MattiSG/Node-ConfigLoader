@@ -4,6 +4,10 @@ ConfigLoader changelog
 v0.2
 ----
 
+### v0.2.1
+
+No changes, bumping version number to override corrupted NPM registry (v0.2.0 is unavailable yet published).
+
 ### v0.2.0
 
 #### Possibly breaking changes
