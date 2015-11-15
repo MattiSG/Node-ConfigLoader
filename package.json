@@ -1,40 +1,43 @@
 {
-	"name":	"mattisg.configloader",
-
-	"version":	"0.2.1",
-
-	"description":	"A configuration loader focused on handling overrides cascades.",
-	"keywords":	["configuration", "config", "setup", "defaults", "options", "init", "initialization"],
-
-	"license":	"MIT",
-
-	"homepage":	"https://github.com/MattiSG/Node-ConfigLoader#README",
-	"bugs":		"https://github.com/MattiSG/Node-ConfigLoader/issues",
-	"author":	"Matti Schneider <hi@mattischneider.fr> (http://mattischneider.fr)",
-
-	"files":	[ "README.md", "src" ],
-	"main":		"src/ConfigLoader.js",
+	"name": "mattisg.configloader",
+	"version": "0.2.1",
+	"description": "A configuration loader focused on handling overrides cascades.",
+	"keywords": [
+		"configuration",
+		"config",
+		"setup",
+		"defaults",
+		"options",
+		"init",
+		"initialization"
+	],
+	"license": "MIT",
+	"homepage": "https://github.com/MattiSG/Node-ConfigLoader#README",
+	"bugs": "https://github.com/MattiSG/Node-ConfigLoader/issues",
+	"author": "Matti Schneider <hi@mattischneider.fr> (http://mattischneider.fr)",
+	"files": [
+		"README.md",
+		"src"
+	],
+	"main": "src/ConfigLoader.js",
 	"directories": {
 		"lib": "./src"
 	},
-	"repository" : {
-		"type" : "git",
-		"url" : "https://github.com/MattiSG/Node-ConfigLoader.git"
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/MattiSG/Node-ConfigLoader.git"
 	},
-
 	"engines": {
-		"node" : ">=0.6"
+		"node": ">=0.6"
 	},
-
 	"dependencies": {
 		"mootools": "1.4"
 	},
 	"devDependencies": {
-		"mocha": ">= 1.8",
+		"mocha": ">=2.3.4",
 		"istanbul": "0.1",
 		"jsdoc": "3.2"
 	},
-
 	"scripts": {
 		"test": "istanbul test _mocha",
 		"doc": "jsdoc --private src --destination doc"
