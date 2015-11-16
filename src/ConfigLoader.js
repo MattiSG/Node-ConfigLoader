@@ -109,7 +109,8 @@ var ConfigLoader = new Class( /** @lends ConfigLoader# */ {
 	* 2. Look in `$HOME/.<appname>/` (user config).
 	* 3. Look in app default (`dirname($0)`).
 	*
-	*@constructs
+	* @param {Object?} options A hash of options to override the defaults.
+	* @constructs ConfigLoader
 	*/
 	initialize: function init(options) {
 		this.setOptions(options);
