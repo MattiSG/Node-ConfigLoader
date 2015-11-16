@@ -35,9 +35,9 @@
     "mootools": "~1.5.2"
   },
   "devDependencies": {
-    "mocha": ">= 1.8",
     "istanbul": "0.1",
-    "jsdoc": "3.2"
+    "jsdoc": "3.2",
+    "mocha": "^2.3.4"
   },
   "scripts": {
     "test": "istanbul test _mocha",
