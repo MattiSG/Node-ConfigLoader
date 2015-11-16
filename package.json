@@ -36,11 +36,11 @@
   },
   "devDependencies": {
     "istanbul": "~0.4.0",
-    "jsdoc": "3.2",
+    "jsdoc": "^3.3.3",
     "mocha": "^2.3.4"
   },
   "scripts": {
-    "test": "istanbul cover _mocha && npm run test-coverage",
+    "test": "istanbul cover _mocha && npm run test-coverage && npm run doc",
     "test-coverage": "istanbul check-coverage --statements 95 --branches 85",
     "doc": "jsdoc --private src --destination doc"
   }
