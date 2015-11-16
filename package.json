@@ -1,6 +1,6 @@
 {
   "name": "mattisg.configloader",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "A configuration loader focused on handling overrides cascades.",
   "keywords": [
     "configuration",
