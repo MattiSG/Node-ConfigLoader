@@ -28,7 +28,7 @@
     "url": "https://github.com/MattiSG/Node-ConfigLoader.git"
   },
   "engines": {
-    "node": ">=0.8",
+    "node": ">= 4",
     "npm": ">=2"
   },
   "dependencies": {
