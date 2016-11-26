@@ -37,7 +37,7 @@
   "devDependencies": {
     "istanbul": "~0.4.0",
     "jsdoc": "^3.3.3",
-    "mocha": "^2.3.4"
+    "mocha": "^3.2.0"
   },
   "scripts": {
     "test": "istanbul cover _mocha && npm run test-coverage && npm run doc",
